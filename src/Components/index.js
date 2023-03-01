@@ -11,6 +11,7 @@ import {
   Pagination,
   Stack,
 } from "@mui/material";
+import usePagination from "@mui/material/usePagination";
 const style = {
   position: "absolute",
   top: "50%",
@@ -22,15 +23,9 @@ const style = {
   borderColor: "white",
   boxShadow: 24,
   p: 4,
-  color: "inherit",
 };
 
 const App = () => {
-  const [page, setPage] = useState(1);
-  const handleChange = (event, value) => {
-    setPage(value);
-    console.log("onpage", value);
-  };
   const [myData, setMyData] = useState([]);
   const [isError, setIsError] = useState("");
   const [imgCard, setImgCard] = useState();
@@ -56,7 +51,17 @@ const App = () => {
   useEffect(() => {
     getMyPostData();
   }, []);
+  const [page, setPage] = useState(1);
+  const PER_PAGE = 100;
 
+  const count = Math.ceil(myData.length / PER_PAGE);
+  const _DATA = usePagination(myData, PER_PAGE);
+
+  const handleChange = (e, p) => {
+    setPage(p);
+    _DATA.jump(p);
+
+  };
   return (
     <>
       {isError !== "" && <h2>{isError}</h2>}
@@ -108,8 +113,8 @@ const App = () => {
           }}
         >
           <Pagination
-            count={5}
-            color="primary"
+            count={count}
+            color="secondary"
             page={page}
             onChange={handleChange}
           />
