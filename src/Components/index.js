@@ -27,6 +27,10 @@ const style = {
 
 const App = () => {
   const [page, setPage] = useState(1);
+  const handleChange = (event, value) => {
+    setPage(value);
+    console.log("onpage", value);
+  };
   const [myData, setMyData] = useState([]);
   const [isError, setIsError] = useState("");
   const [imgCard, setImgCard] = useState();
@@ -43,7 +47,7 @@ const App = () => {
         `https://jsonplaceholder.typicode.com/photos`
       );
       setMyData(res.data.slice(0, 500));
-      console.log("data here", res.data);
+      console.log("data here", setMyData);
     } catch (error) {
       setIsError(error.message);
     }
@@ -97,7 +101,7 @@ const App = () => {
           spacing={2}
           sx={{
             mt: 5,
-            mb:4,
+            mb: 4,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -106,8 +110,8 @@ const App = () => {
           <Pagination
             count={5}
             color="primary"
-            defaultPage={page}
-            onChange={(event, value) => setPage(value)}
+            page={page}
+            onChange={handleChange}
           />
         </Stack>
       </Container>
